@@ -1,0 +1,19 @@
+{
+  "name": "Slides",
+  "version": "0.2.0",
+  "description": "Slides App",
+  "main": "js/app.js",
+  "window": {
+    "min_width": 1280,
+    "min_height": 720,
+    "icon": "assets/icon.png",
+	"frame": true,
+    "transparent": false,
+	"show": false
+  },
+  "maintainers": [
+    {
+      "name": "Alex Soundmaster"
+    }
+  ]
+}
