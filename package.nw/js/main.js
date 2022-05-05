@@ -17,10 +17,7 @@ var gui = require('nw.gui');
 
 
 	
-// on close app
-gui.Window.get().on('close', function(){
-	gui.App.quit();
-});
+
 	
 
 		
@@ -34,7 +31,7 @@ jQuery(document).ready(function($) {
 	
 	
 	// show main menu
-	main_menu_init();
+	// main_menu_init();
 
 		
 		

@@ -1,11 +1,9 @@
 {
-  "name": "Slides",
-  "version": "0.2.0",
-  "description": "Slides App",
+  "name": "Battery",
+  "version": "0.2.1",
+  "description": "Battery App",
   "main": "js/app.js",
   "window": {
-    "min_width": 1280,
-    "min_height": 720,
     "icon": "assets/icon.png",
 	"frame": true,
     "transparent": false,
