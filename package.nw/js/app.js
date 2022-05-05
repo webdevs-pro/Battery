@@ -2,7 +2,8 @@
 var gui = require('nw.gui');
 
 // Create a tray icon
-var tray = new nw.Tray({ title: 'Tray', icon: 'assets/icon2.png' });
+var tray = new nw.Tray({ title: 'Tray', icon: 'assets/Group 1.png' });
+
 
 // Give it a menu
 var tray_menu = new gui.Menu();
@@ -38,7 +39,7 @@ tray.menu = tray_menu;
 
 tray.on('click', function() {
 	gui.Window.get().show();
-	tray.icon = 'assets/icon.png'
+	tray.icon = 'assets/Group 1.png'
 })
 
 
@@ -46,7 +47,8 @@ tray.on('click', function() {
 
 gui.Window.open('/html/main.html', {
 	show: false,
-	position: "center"
+	position: "center",
+	resizable: false
 });
 
 
@@ -62,12 +64,12 @@ process.on('uncaughtException', function (err) {
 gui.Window.get().on('close', function(){
 	var main_win = gui.Window.get();
 	gui.Window.get().hide();
-	tray.icon = 'assets/icon2.png'
+	tray.icon = 'assets/Group 2.png'
 });
 // on close app
 gui.Window.get().on('minimize', function(){
 	gui.Window.get().hide();
-	tray.icon = 'assets/icon2.png'
+	tray.icon = 'assets/Group 2.png'
 });
 
 

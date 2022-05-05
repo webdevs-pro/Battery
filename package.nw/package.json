@@ -1,13 +1,12 @@
 {
   "name": "Battery",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Battery App",
   "main": "js/app.js",
   "window": {
     "icon": "assets/icon.png",
-	"frame": true,
-    "transparent": false,
-	"show": false
+    "show": false,
+    "resizable": false 
   },
   "maintainers": [
     {
