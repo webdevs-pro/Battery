@@ -5,13 +5,9 @@ var gui = require('nw.gui');
 var tray = new nw.Tray({ title: 'Battery status' });
 
 
-var color;
+var color = 'white';
 const bc = new BroadcastChannel('test_channel');
-bc.onmessage = event => { 
-	console.log(event.data); 
-	color = event.data;
-	setTrayIcon();
-}
+
 
 
 
@@ -34,6 +30,24 @@ tray_menu.append(new gui.MenuItem({
 		tray.remove();
 		tray = null;
 		document.location.reload(true); 
+	}
+}));
+tray_menu.append(new gui.MenuItem({
+	label: 'Dark',
+	type: 'normal',
+	click: function () {
+		switchToDarkTheme();
+		color = 'white';
+		setTrayIcon();
+	}
+}));
+tray_menu.append(new gui.MenuItem({
+	label: 'Light',
+	type: 'normal',
+	click: function () {
+		switchToLightTheme();
+		color = 'black';
+		setTrayIcon();
 	}
 }));
 tray_menu.append(new gui.MenuItem({
@@ -101,5 +115,33 @@ function setTrayIcon() {
 
 
 
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
- 
+async function runCommand(command) {
+  const { stdout, stderr, error } = await exec(command);
+  if(stderr){console.error('stderr:', stderr);}
+  if(error){console.error('error:', error);}
+  return stdout;
+}
+async function switchToDarkTheme() {
+	var command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force"';
+	var result = await runCommand(command);
+	console.log("_result", result); 
+
+	command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force"';
+	result = await runCommand(command);
+	console.log("_result", result); 
+}
+async function switchToLightTheme() {
+	var command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name SystemUsesLightTheme -Value 1 -Type Dword -Force"';
+	var result = await runCommand(command);
+	console.log("_result", result); 
+
+	command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 1 -Type Dword -Force"';
+	result = await runCommand(command);
+	console.log("_result", result); 
+}
+
+
+

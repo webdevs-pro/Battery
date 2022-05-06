@@ -10,8 +10,9 @@ jQuery(document).ready(function($) {
 });
 
 
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+
+
+
 
 async function runCommand(command) {
   const { stdout, stderr, error } = await exec(command);
@@ -39,34 +40,19 @@ async function relayOff () {
 
 
 const bc = new BroadcastChannel('test_channel');
-if ( getPreferredColorScheme() == 'light' ) {
-	bc.postMessage('black');
-} else {
-	bc.postMessage('white');
+
+
+
+
+ bc.onmessage = event => { 
+	console.log(event.data); 
+	var theme = event.data;
+	if ( theme == 'dark' ) {
+		switchToDarkTheme();
+	}
 }
-
-
-
-
-
-var color;
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-	colorScheme = event.matches ? "dark" : "light";
-	if ( colorScheme == 'light' ) {
-		color = 'black';
-	} else {
-		color = 'white';
-	}
-	bc.postMessage(color);
-});
-
-function getPreferredColorScheme() {
-	if (window.matchMedia) {
-	  if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-		 return 'dark';
-	  } else {
-		 return 'light';
-	  }
-	}
-	return 'light';
- }
+async function switchToDarkTheme() {
+	var command = '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force"';
+	var result = await runCommand(command);
+	console.log("_result", result); 
+}
