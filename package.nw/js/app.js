@@ -24,8 +24,6 @@ tray_menu.append(new gui.MenuItem({
 	label: 'Show App',
 	type: 'normal',
 	click: function () {
-		// tray.remove();
-		// tray = null;
 		gui.Window.get().show();
 	}
 }));
@@ -60,7 +58,8 @@ tray.on('click', function() {
 gui.Window.open('/html/main.html', {
 	show: false,
 	position: "center",
-	resizable: false
+	resizable: false,
+	show_in_taskbar: false
 });
 
 
@@ -74,7 +73,6 @@ process.on('uncaughtException', function (err) {
 
 // on close app
 gui.Window.get().on('close', function(){
-	var main_win = gui.Window.get();
 	gui.Window.get().hide();
 });
 // on close app
