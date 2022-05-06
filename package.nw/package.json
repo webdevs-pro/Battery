@@ -1,16 +1,14 @@
 {
   "name": "Battery",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Battery App",
   "main": "js/app.js",
   "window": {
     "icon": "assets/icon.png",
     "show": false,
-    "resizable": false 
+    "resizable": false
   },
-  "maintainers": [
-    {
-      "name": "Alex Soundmaster"
-    }
-  ]
+  "maintainers": [{
+    "name": "Alex Soundmaster"
+  }]
 }

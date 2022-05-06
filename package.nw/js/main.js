@@ -1,65 +1,11 @@
-
-
-// init
-var gui = require('nw.gui');
-
-
-
-
-//gui.Window.get().showDevTools();
-
-	
-	
-
-	
-	
-	
-
-
-	
-
-	
-
-		
-		
-		
-		
-// JQUERY
 jQuery(document).ready(function($) {
 	
-	
-	
-	
-	// show main menu
-	// main_menu_init();
-
-		
-		
-		
-		
-
-
-
-
 	$('#on').on('click', function() {
 		relayOn();
 	})
 	$('#off').on('click', function() {
 		relayOff();
 	})
-
-	setInterval(function() {
-		navigator.getBattery().then(function(battery) {
-
-			var level = battery.level;
-			$('#level').text(level);
-	
-			console.clear();
-			console.log('battery', battery);
-	
-		});
-	}, 3000)
-
 
 });
 
@@ -88,3 +34,39 @@ async function relayOff () {
 }
 
 
+
+
+
+
+const bc = new BroadcastChannel('test_channel');
+if ( getPreferredColorScheme() == 'light' ) {
+	bc.postMessage('black');
+} else {
+	bc.postMessage('white');
+}
+
+
+
+
+
+var color;
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+	colorScheme = event.matches ? "dark" : "light";
+	if ( colorScheme == 'light' ) {
+		color = 'black';
+	} else {
+		color = 'white';
+	}
+	bc.postMessage(color);
+});
+
+function getPreferredColorScheme() {
+	if (window.matchMedia) {
+	  if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+		 return 'dark';
+	  } else {
+		 return 'light';
+	  }
+	}
+	return 'light';
+ }
