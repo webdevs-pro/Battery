@@ -2,7 +2,9 @@
 var gui = require('nw.gui');
 
 // Create a tray icon
-var tray = new nw.Tray({ title: 'Battery status' });
+var tray = new nw.Tray({ 
+	title: 'Battery status'
+});
 
 
 var color = 'white';
@@ -125,6 +127,7 @@ function setTrayIcon() {
 		var level = battery.level * 100;
 		console.log('color', color);
 		tray.icon = 'assets/' + color + '/' + level + '-' + color + '.png';
+		tray.tooltip = level;
 	});
 }
 
