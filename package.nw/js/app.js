@@ -16,6 +16,34 @@ const bc = new BroadcastChannel('test_channel');
 
 // Give it a menu
 var tray_menu = new gui.Menu();
+var theme_sub_menu = new gui.Menu();
+theme_sub_menu.append(new gui.MenuItem({
+	label: 'Dark',
+	type: 'normal',
+	click: function () {
+		switchToDarkTheme();
+		color = 'white';
+		setTrayIcon();
+	}
+}));
+theme_sub_menu.append(new gui.MenuItem({
+	label: 'Light',
+	type: 'normal',
+	click: function () {
+		switchToLightTheme();
+		color = 'black';
+		setTrayIcon();
+	},
+
+}));
+var theme_menu = new gui.MenuItem({
+	label: 'Scheme',
+	submenu: theme_sub_menu,
+	icon: 'assets/black/1-black.png'
+});
+tray_menu.append( theme_menu );
+
+
 tray_menu.append(new gui.MenuItem({
 	label: 'Show App',
 	type: 'normal',
@@ -32,24 +60,7 @@ tray_menu.append(new gui.MenuItem({
 		document.location.reload(true); 
 	}
 }));
-tray_menu.append(new gui.MenuItem({
-	label: 'Dark',
-	type: 'normal',
-	click: function () {
-		switchToDarkTheme();
-		color = 'white';
-		setTrayIcon();
-	}
-}));
-tray_menu.append(new gui.MenuItem({
-	label: 'Light',
-	type: 'normal',
-	click: function () {
-		switchToLightTheme();
-		color = 'black';
-		setTrayIcon();
-	}
-}));
+
 tray_menu.append(new gui.MenuItem({
 	label: 'Close',
 	type: 'normal',
@@ -59,6 +70,10 @@ tray_menu.append(new gui.MenuItem({
 		gui.App.quit();
 	}
 }));
+
+
+
+
 
 tray.menu = tray_menu;
 
@@ -143,5 +158,17 @@ async function switchToLightTheme() {
 	console.log("_result", result); 
 }
 
-
-
+getCurrentTheme().then(function(result) {
+	if ( result == 1 ) {
+		color = 'black';
+		setTrayIcon();
+	} else {
+		color = 'white';
+		setTrayIcon();
+	}
+});
+async function getCurrentTheme() {
+	var command = 'powershell.exe -Command "Get-ItemPropertyValue -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name \"SystemUsesLightTheme\""';
+	var result = await runCommand(command);
+	return result;
+}

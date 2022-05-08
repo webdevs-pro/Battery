@@ -39,20 +39,20 @@ async function relayOff () {
 
 
 
-const bc = new BroadcastChannel('test_channel');
+// const bc = new BroadcastChannel('test_channel');
 
 
 
 
- bc.onmessage = event => { 
-	console.log(event.data); 
-	var theme = event.data;
-	if ( theme == 'dark' ) {
-		switchToDarkTheme();
-	}
-}
-async function switchToDarkTheme() {
-	var command = '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force"';
-	var result = await runCommand(command);
-	console.log("_result", result); 
-}
+//  bc.onmessage = event => { 
+// 	console.log(event.data); 
+// 	var theme = event.data;
+// 	if ( theme == 'dark' ) {
+// 		switchToDarkTheme();
+// 	}
+// }
+// async function switchToDarkTheme() {
+// 	var command = '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force"';
+// 	var result = await runCommand(command);
+// 	console.log("_result", result); 
+// }
