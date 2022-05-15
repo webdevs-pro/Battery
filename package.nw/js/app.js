@@ -7,8 +7,8 @@ var tray = new nw.Tray({
 });
 
 
-var color = 'white';
-const bc = new BroadcastChannel('test_channel');
+var color;
+
 
 
 
@@ -24,8 +24,6 @@ theme_sub_menu.append(new gui.MenuItem({
 	type: 'normal',
 	click: function () {
 		switchToDarkTheme();
-		color = 'white';
-		setTrayIcon();
 	}
 }));
 theme_sub_menu.append(new gui.MenuItem({
@@ -33,15 +31,12 @@ theme_sub_menu.append(new gui.MenuItem({
 	type: 'normal',
 	click: function () {
 		switchToLightTheme();
-		color = 'black';
-		setTrayIcon();
 	},
 
 }));
 var theme_menu = new gui.MenuItem({
 	label: 'Scheme',
 	submenu: theme_sub_menu,
-	icon: 'assets/black/1-black.png'
 });
 tray_menu.append( theme_menu );
 
@@ -124,7 +119,7 @@ setInterval(function(){
 
 function setTrayIcon() {
 	navigator.getBattery().then(function(battery) {
-		var level = battery.level * 100;
+		var level = Math.round(battery.level * 100);
 		console.log('color', color);
 		tray.icon = 'assets/' + color + '/' + level + '-' + color + '.png';
 		tray.tooltip = level;
@@ -145,29 +140,46 @@ async function runCommand(command) {
 async function switchToDarkTheme() {
 	var command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force"';
 	var result = await runCommand(command);
-	console.log("_result", result); 
 
 	command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force"';
 	result = await runCommand(command);
-	console.log("_result", result); 
+
+	color = 'white';
+	setTrayIcon();
+
+	tray.menu.items[0].submenu.items[0].icon = 'assets/check-white.png';
+	tray.menu.items[0].submenu.items[1].icon = '';
 }
 async function switchToLightTheme() {
 	var command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name SystemUsesLightTheme -Value 1 -Type Dword -Force"';
 	var result = await runCommand(command);
-	console.log("_result", result); 
 
 	command = 'powershell.exe -Command "Set-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 1 -Type Dword -Force"';
 	result = await runCommand(command);
-	console.log("_result", result); 
+
+
+	color = 'black';
+	setTrayIcon();
+
+	tray.menu.items[0].submenu.items[0].icon = '';
+	tray.menu.items[0].submenu.items[1].icon = 'assets/check-black.png';
 }
 
 getCurrentTheme().then(function(result) {
+	console.log('tray.menu', tray.menu);
+	// alert(result);
+
 	if ( result == 1 ) {
 		color = 'black';
 		setTrayIcon();
+		tray.menu.items[0].submenu.items[0].icon = '';
+		tray.menu.items[0].submenu.items[1].icon = 'assets/check-black.png';
+		
 	} else {
 		color = 'white';
 		setTrayIcon();
+		tray.menu.items[0].submenu.items[0].icon = 'assets/check-white.png';
+		tray.menu.items[0].submenu.items[1].icon = '';
 	}
 });
 async function getCurrentTheme() {
